@@ -1,3 +1,5 @@
+from datetime import timedelta
+from django.db.models import Min
 from django.db.models.query import QuerySet
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -9,21 +11,32 @@ from .serializers import FlightSerializer, GroupedFlightsSerializer
 # Create your views here.
 class FlightsViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Flight.objects.all()
-    serializer_class = FlightSerializer
 
     MAIN_FLIGHT_MAX_COUNT = 2
 
     def list(self, request, *args, **kwargs):
-        response = super().list(request, *args, **kwargs)
-        data = response.data
+        super().list(self)
+        # Copied from super().list() implementation
+        queryset: QuerySet = self.filter_queryset(self.get_queryset())
 
-        main_flights = data[: self.MAIN_FLIGHT_MAX_COUNT]
-        other_flights = data[self.MAIN_FLIGHT_MAX_COUNT :]
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        cheap_flights: float = queryset.filter(
+            price_comfort=queryset.aggregate(Min("price_economic"))
+        )
+        faster_flights: timedelta = queryset.filter(
+            duration=queryset.aggregate(Min("duration"))
+        )
+
+        others = queryset.exclude(cheap_flights).exclude(faster_flights)
 
         serializer = GroupedFlightsSerializer(
             data={
-                "main": main_flights,
-                "others": other_flights,
+                "main": cheap_flights + faster_flights,
+                "others": others,
             }
         )
         serializer.is_valid(raise_exception=True)
