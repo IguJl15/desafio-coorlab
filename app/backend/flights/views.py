@@ -5,42 +5,51 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 
 from .models import Flight
-from .serializers import FlightSerializer, GroupedFlightsSerializer
+from .serializers import FlightSerializer
 
 
 # Create your views here.
 class FlightsViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Flight.objects.all()
-
-    MAIN_FLIGHT_MAX_COUNT = 2
+    serializer_class = FlightSerializer
 
     def list(self, request, *args, **kwargs):
-        super().list(self)
+        # super().list()
         # Copied from super().list() implementation
         queryset: QuerySet = self.filter_queryset(self.get_queryset())
 
         page = self.paginate_queryset(queryset)
         if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
+            main_serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(main_serializer.data)
+        # end copy
 
-        cheap_flights: float = queryset.filter(
-            price_comfort=queryset.aggregate(Min("price_economic"))
-        )
-        faster_flights: timedelta = queryset.filter(
-            duration=queryset.aggregate(Min("duration"))
+        minimums = queryset.aggregate(
+            price=Min("price_economic"), duration=Min("duration")
         )
 
-        others = queryset.exclude(cheap_flights).exclude(faster_flights)
+        faster_flights = queryset.filter(duration=minimums["duration"])
+        # TODO: remove cheaper flights that have the price higher than the comfort option.
+        # Maybe add some feedback as a promotion "We have the cheapest comfort bed for you!"
+        cheap_flights = queryset.filter(price_economic=minimums["price"])
 
-        serializer = GroupedFlightsSerializer(
-            data={
-                "main": cheap_flights + faster_flights,
-                "others": others,
+        all_selected_flights = cheap_flights.union(faster_flights)
+
+        others = queryset.exclude(
+            id__in=all_selected_flights.values_list("id", flat=True)
+        )
+
+        comfort_serializer = self.get_serializer(faster_flights, many=True)
+        economic_serializer = self.get_serializer(cheap_flights, many=True)
+        others_serializer = self.get_serializer(others, many=True)
+
+        return Response(
+            {
+                "comfort": comfort_serializer.data,
+                "economic": economic_serializer.data,
+                "others": others_serializer.data,
             }
         )
-        serializer.is_valid(raise_exception=True)
-        return Response(serializer.validated_data)
 
     def get_queryset(self):
         query_set: QuerySet = super().get_queryset()
