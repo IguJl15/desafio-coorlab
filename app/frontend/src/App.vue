@@ -99,14 +99,72 @@ function formatVerboseDestination(dest: Airport) {
     </div>
     <div v-if="flightsEventData.isLoading">Loading...</div>
     <div v-if="flightsEventData.data != null" class="results">
-      <div class="comfort">Conforto de {{ flightsEventData }}</div>
-      <div class="economic">Economia</div>
-      <div class="others">e outros</div>
+      <div class="comfort">
+        <h3>Conforto {{ flightsEventData.data.comfort.length }}</h3>
+
+        <div v-if="flightsEventData.data.comfort.length > 0">
+          <div class="info" v-for="(flight, index) in flightsEventData.data.comfort" :key="index">
+            <h4>{{ flight.company_name }}</h4>
+            <span> Destino: {{ flight.city_destination }} </span>
+            <span>Duração estimada: {{ flight.duration }} </span>
+            <span> Preço: {{ flight.price_comfort }} </span>
+            <span> Leito: {{ flight.comfort_bed_location }} (Completo) </span>
+          </div>
+        </div>
+        <div v-else>Nenhum voo encontrado</div>
+      </div>
+
+      <div class="economic">
+        <h3>Econômico {{ flightsEventData.data.economic.length }}</h3>
+
+        <div v-if="flightsEventData.data.economic.length > 0">
+          <div class="info" v-for="(flight, index) in flightsEventData.data.economic" :key="index">
+            <h4>{{ flight.company_name }}</h4>
+            <span>Destino: {{ flight.city_destination }}</span>
+            <span>Duração estimada: {{ flight.duration }} </span>
+            <span>Preço: {{ flight.price_economic }}</span>
+            <span>Assento: {{ flight.economic_seat_location }}</span>
+          </div>
+        </div>
+        <div v-else>Nenhum voo encontrado</div>
+      </div>
+      <div class="others">
+        <h3>Outros {{ flightsEventData.data.others.length }}</h3>
+
+        <div v-if="flightsEventData.data.others.length > 0">
+          <div class="info" v-for="(flight, index) in flightsEventData.data.others" :key="index">
+            <h4>{{ flight.company_name }}</h4>
+            <span> Destino: {{ flight.city_destination }} </span>
+            <span>Duração estimada: {{ flight.duration }} </span>
+            <div>
+              Preços:
+              <span>Econômica: {{ flight.price_economic }}</span>
+              <span>Comfort: {{ flight.price_comfort }}</span>
+            </div>
+            <div>
+              Assentos:
+              <span>Econômica: {{ flight.economic_seat_location }}</span>
+              <span>Comfort: {{ flight.comfort_bed_location }}</span>
+            </div>
+          </div>
+        </div>
+        <div v-else>Nenhum voo encontrado</div>
+      </div>
     </div>
   </main>
 </template>
 
 <style scoped>
+.info {
+  display: flex;
+  flex-direction: column;
+
+  background-color: darkslategray;
+
+  padding: 8px;
+  margin-bottom: 4px;
+}
+
 .search-form-container {
   display: flex;
   flex-direction: column;
