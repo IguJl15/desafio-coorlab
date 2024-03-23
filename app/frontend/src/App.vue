@@ -1,15 +1,18 @@
 <script setup lang="ts">
-import type { Flight, Airport } from '@/models/Flight'
-import { ref, onMounted } from 'vue'
+import type { FlightsResponse } from '@/data/FlightService'
+import FlightService from '@/data/FlightService'
+import type { Airport } from '@/models/Flight'
+import { computed, ref } from 'vue'
+
+const airportList: Airport[] = [
+  { code: 'THE', name: 'Teresina' },
+  { code: 'CWB', name: 'Curitiba' }
+]
 
 type Data = {
   isLoading: boolean
   error: string | null
-  data: {
-    comfortFlights: Flight[]
-    economicFlights: Flight[]
-    othersFlights: Flight[]
-  } | null
+  data: FlightsResponse | null
 }
 
 const flightsEventData = ref<Data>({
@@ -19,33 +22,52 @@ const flightsEventData = ref<Data>({
 })
 
 const formData = ref({
-  destination: '',
-  date: Date.now()
+  destination: airportList[0],
+  date: new Date()
 })
 
-const airportList: Airport[] = [{ code: 'THE', name: 'Teresina' }]
+async function search() {
+  try {
+    flightsEventData.value.isLoading = true
+    // validate data
 
-onMounted(() => {
-  console.log(`Alo, on mounted! Counter is ${flightsEventData.value}`)
-})
+    const result = await FlightService.searchFlights(
+      formData.value.destination,
+      formData.value.date
+    )
+    console.log(result)
 
-function search() {
-  clearResults()
-  flightsEventData.value.isLoading = true
-  // validate data
-
-  setTimeout(() => {
     flightsEventData.value.isLoading = false
-    flightsEventData.value.data = {
-      comfortFlights: [],
-      economicFlights: [],
-      othersFlights: []
-    }
-  }, 1000)
+    flightsEventData.value.data = result
+  } catch (error) {
+    flightsEventData.value.error = error.toString()
+  }
+
+  flightsEventData.value.isLoading = false
 }
 
-function clearResults() {
-  flightsEventData.value.data = null
+// Computed references to enhance form data handle
+const dateInputComp = computed({
+  get() {
+    return formData.value.date.toISOString().substring(0, 10)
+  },
+  set(newValue) {
+    formData.value.date = newValue as unknown as Date
+  }
+})
+
+const destinationInputComp = computed({
+  get() {
+    return formatVerboseDestination(formData.value.destination)
+  },
+  set(newValue) {
+    const code = newValue.split(' - ')[0]
+    formData.value.destination = airportList.filter((airport) => airport.code == code)[0]
+  }
+})
+
+function formatVerboseDestination(dest: Airport) {
+  return `${dest.code} - ${dest.name}`
 }
 </script>
 
@@ -59,16 +81,20 @@ function clearResults() {
       <h2>Encontre o melhor voo para a sua viagem</h2>
       <p>Insira abaixo as informações da viagem que você planeja</p>
       <form action="" method="get">
-        <input type="text" v-model="formData.destination" list="cities-list" />
-        <datalist id="cities-list">
-          <option value="Internet"></option>
+        <select v-model="destinationInputComp" list="cities-list">
           <template v-for="(item, index) in airportList" :key="index">
-            <option :value="item.code">{{ item.name }}</option>
+            <option :value="formatVerboseDestination(item)">
+              {{ formatVerboseDestination(item) }}
+            </option>
           </template>
           <option></option>
-        </datalist>
-        <input type="date" v-model="formData.date" />
-        <button type="button" @click.prevent="search">Procurar</button>
+        </select>
+        <input
+          type="date"
+          @input="(event) => (dateInputComp = event.target!.valueAsDate)"
+          :value="dateInputComp"
+        />
+        <button type="submit" @click="search">Procurar</button>
       </form>
     </div>
     <div v-if="flightsEventData.isLoading">Loading...</div>
