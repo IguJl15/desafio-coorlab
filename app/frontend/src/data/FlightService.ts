@@ -31,7 +31,12 @@ export default class FlightService {
       return json
     } else {
       // TODO: Take this out of my sight
-      throw { response: result, requestData: requestData, json: await result.json() }
+      throw {
+        response: result,
+        requestData: requestData,
+        title: 'Ocorreu um erro ao buscar os voos disponíveis',
+        ...(await result.json())
+      }
     }
   }
 

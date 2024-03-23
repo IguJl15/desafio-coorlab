@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import SearchFlightsForm, { type FormDataScheme } from '@/components/SearchFlightsForm.vue'
+import ErrorContainer from '@/components/ErrorContainer.vue'
 
 import type { FlightsResponse } from '@/data/FlightService'
 import FlightService from '@/data/FlightService'
 import { ref } from 'vue'
 import AuthService from './data/AuthService'
+import type { AppError } from './models/AppError'
 
 type Data = {
   isLoading: boolean
-  error: string | null
+  error: AppError | null
   data: FlightsResponse | null
 }
 
@@ -19,20 +21,24 @@ const flightsEventData = ref<Data>({
 })
 
 async function search(formData: FormDataScheme): Promise<void> {
+  clearData()
   try {
     flightsEventData.value.isLoading = true
     // validate data
 
     const result = await FlightService.searchFlights(formData.destination, formData.date)
 
-    console.log(result)
-
     flightsEventData.value.data = result
-  } catch (error: unknown) {
-    flightsEventData.value.error = `${error}`
+  } catch (error: AppError) {
+    flightsEventData.value.error = error
   }
 
   flightsEventData.value.isLoading = false
+}
+
+function clearData() {
+  flightsEventData.value.data = null
+  flightsEventData.value.error = null
 }
 
 function login() {
@@ -48,6 +54,7 @@ function login() {
   <main class="body">
     <!-- .body = light color (50% transparent) -->
     <SearchFlightsForm @form-button-click="search" />
+    <ErrorContainer v-if="flightsEventData.error != null" :error="flightsEventData.error" />
     <div v-if="flightsEventData.isLoading">Loading...</div>
     <div v-if="flightsEventData.data != null" class="results">
       <div class="comfort">
