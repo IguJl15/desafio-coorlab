@@ -1,0 +1,394 @@
+[
+    {
+        "code": "AAX",
+        "name": "Arax\u00e1"
+    },
+    {
+        "code": "AFL",
+        "name": "Alta Floresta"
+    },
+    {
+        "code": "AJU",
+        "name": "Aracaju"
+    },
+    {
+        "code": "ARU",
+        "name": "Ara\u00e7atuba"
+    },
+    {
+        "code": "ATM",
+        "name": "Altamira"
+    },
+    {
+        "code": "AUX",
+        "name": "Araguaina"
+    },
+    {
+        "code": "BAU",
+        "name": "Bauru"
+    },
+    {
+        "code": "BEL",
+        "name": "Belém"
+    },
+    {
+        "code": "BPS",
+        "name": "Porto Seguro"
+    },
+    {
+        "code": "BRA",
+        "name": "Barreiras"
+    },
+    {
+        "code": "BSB",
+        "name": "Lago Sul"
+    },
+    {
+        "code": "BVB",
+        "name": "Boa Vista"
+    },
+    {
+        "code": "BVH",
+        "name": "Vilhena"
+    },
+    {
+        "code": "CAC",
+        "name": "Cascavel"
+    },
+    {
+        "code": "CCM",
+        "name": "Forquilhinha"
+    },
+    {
+        "code": "CFC",
+        "name": "Ca\u00e7ador"
+    },
+    {
+        "code": "CGB",
+        "name": "Cuiabá"
+    },
+    {
+        "code": "CGH",
+        "name": "São Paulo"
+    },
+    {
+        "code": "CGR",
+        "name": "Campo Grande"
+    },
+    {
+        "code": "CKS",
+        "name": "Carajás"
+    },
+    {
+        "code": "CMG",
+        "name": "Corumbá"
+    },
+    {
+        "code": "CNF",
+        "name": "Confins"
+    },
+    {
+        "code": "CPQ",
+        "name": "Campinas"
+    },
+    {
+        "code": "CPV",
+        "name": "Campina Grande"
+    },
+    {
+        "code": "CWB",
+        "name": "São José dos Pinhais"
+    },
+    {
+        "code": "CXJ",
+        "name": "Caxias do Sul"
+    },
+    {
+        "code": "CZS",
+        "name": "Cruzeiro Do Sul"
+    },
+    {
+        "code": "DOU",
+        "name": "Dourados"
+    },
+    {
+        "code": "ERM",
+        "name": "Erechim"
+    },
+    {
+        "code": "FEN",
+        "name": "Vila dos Rem\u00e9dios"
+    },
+    {
+        "code": "FLN",
+        "name": "Florianópolis"
+    },
+    {
+        "code": "FOR",
+        "name": "Fortaleza"
+    },
+    {
+        "code": "FRC",
+        "name": "França"
+    },
+    {
+        "code": "GEL",
+        "name": "Santo Ângelo"
+    },
+    {
+        "code": "GIG",
+        "name": "Rio de Janeiro"
+    },
+    {
+        "code": "GRU",
+        "name": "Guarulhos"
+    },
+    {
+        "code": "GVR",
+        "name": "Governador Valadares"
+    },
+    {
+        "code": "GYN",
+        "name": "Goiânia"
+    },
+    {
+        "code": "IGU",
+        "name": "Foz do Iguaçu"
+    },
+    {
+        "code": "IMP",
+        "name": "Imperatriz"
+    },
+    {
+        "code": "IOS",
+        "name": "Ilh\u00e9us"
+    },
+    {
+        "code": "IPN",
+        "name": "Santana do Para\u00edso"
+    },
+    {
+        "code": "JCB",
+        "name": "Joa\u00e7aba"
+    },
+    {
+        "code": "JDF",
+        "name": "Juiz de Fora"
+    },
+    {
+        "code": "JDO",
+        "name": "Juazeiro do Norte"
+    },
+    {
+        "code": "JOI",
+        "name": "Joinville"
+    },
+    {
+        "code": "JPA",
+        "name": "Santa Rita"
+    },
+    {
+        "code": "JPR",
+        "name": "Ji-Paran\u00e1"
+    },
+    {
+        "code": "LAJ",
+        "name": "Lages"
+    },
+    {
+        "code": "LDB",
+        "name": "Londrina"
+    },
+    {
+        "code": "MAB",
+        "name": "Marab\u00e1"
+    },
+    {
+        "code": "MAO",
+        "name": "Manáus"
+    },
+    {
+        "code": "MCP",
+        "name": "Macap\u00e1"
+    },
+    {
+        "code": "MCZ",
+        "name": "Maceió"
+    },
+    {
+        "code": "MEA",
+        "name": "Macaé"
+    },
+    {
+        "code": "MGF",
+        "name": "Maringá"
+    },
+    {
+        "code": "MII",
+        "name": "Marilia"
+    },
+    {
+        "code": "MOC",
+        "name": "Montes Claros"
+    },
+    {
+        "code": "MVS",
+        "name": "Mucuri"
+    },
+    {
+        "code": "NAT",
+        "name": "Natal"
+    },
+    {
+        "code": "NVT",
+        "name": "Navegantes"
+    },
+    {
+        "code": "OPS",
+        "name": "Sinop"
+    },
+    {
+        "code": "ORJ",
+        "name": "Rera"
+    },
+    {
+        "code": "PET",
+        "name": "Pelotas"
+    },
+    {
+        "code": "PFB",
+        "name": "Passo Fundo"
+    },
+    {
+        "code": "PIN",
+        "name": "Parintins"
+    },
+    {
+        "code": "PLU",
+        "name": "Belo Horizonte"
+    },
+    {
+        "code": "PMW",
+        "name": "Palmas"
+    },
+    {
+        "code": "PNZ",
+        "name": "Petrolina"
+    },
+    {
+        "code": "POA",
+        "name": "Porto Alegre"
+    },
+    {
+        "code": "PPB",
+        "name": "Presidente Prudente"
+    },
+    {
+        "code": "PVH",
+        "name": "P\u00f4rto Velho"
+    },
+    {
+        "code": "CWB",
+        "name": "Sao Jose dos Pinhais"
+    },
+    {
+        "code": "RAO",
+        "name": "Ribeir\u00e3o Pr\u00eato"
+    },
+    {
+        "code": "RBR",
+        "name": "Rio Branco"
+    },
+    {
+        "code": "REC",
+        "name": "Recife"
+    },
+    {
+        "code": "RIA",
+        "name": "Santa Maria"
+    },
+    {
+        "code": "RIG",
+        "name": "Rio Grande"
+    },
+    {
+        "code": "ROO",
+        "name": "Rondon\u00f3polis"
+    },
+    {
+        "code": "SDU",
+        "name": "Rio de Janeiro"
+    },
+    {
+        "code": "SJK",
+        "name": "Sao José dos Campos"
+    },
+    {
+        "code": "SJP",
+        "name": "S\u00e3o Jos\u00e9 do Rio Pr\u00eato"
+    },
+    {
+        "code": "SLZ",
+        "name": "São Luiz"
+    },
+    {
+        "code": "SRA",
+        "name": "Santa Rosa"
+    },
+    {
+        "code": "SSA",
+        "name": "Salvador"
+    },
+    {
+        "code": "STM",
+        "name": "Santar\u00e9m"
+    },
+    {
+        "code": "THE",
+        "name": "Teresina"
+    },
+    {
+        "code": "TMT",
+        "name": "Trombetas"
+    },
+    {
+        "code": "TUR",
+        "name": "Tucuru\u00ed"
+    },
+    {
+        "code": "UBA",
+        "name": "Uberaba"
+    },
+    {
+        "code": "UDI",
+        "name": "Uberlândia"
+    },
+    {
+        "code": "URG",
+        "name": "Uruguaiana"
+    },
+    {
+        "code": "VCP",
+        "name": "Campinas"
+    },
+    {
+        "code": "VDC",
+        "name": "Vit\u00f3ria da Conquista"
+    },
+    {
+        "code": "VIX",
+        "name": "Vitória"
+    },
+    {
+        "code": "XAP",
+        "name": "Chapecó"
+    },
+    {
+        "code": "XNB",
+        "name": "Santo Ant\u00f4nio do I\u00e7\u00e1"
+    },
+    {
+        "code": "ZNB",
+        "name": "Santo Ant\u00f4nio do I\u00e7\u00e1"
+    }
+]
