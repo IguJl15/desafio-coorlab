@@ -1,16 +1,16 @@
 import type { Airport, Flight } from '@/models/Flight'
+import env from '@/misc/env'
+import AuthService from '@/data/AuthService'
 
-type FlightsResponse = {
-  comfortFlights: Flight[]
-  economicFlights: Flight[]
-  othersFlights: Flight[]
+export type FlightsResponse = {
+  comfort: Flight[]
+  economic: Flight[]
+  others: Flight[]
 }
 
-class FlightService {
-  private host = 'localhost:3000'
-
-  async searchFlights(destination: Airport, date: Date): Promise<FlightsResponse> {
-    const baseUrl = `${this.host}/api/flights`
+export default class FlightService {
+  static async searchFlights(destination: Airport, date: Date): Promise<FlightsResponse> {
+    const baseUrl = `${env.VITE_HOST}/api/flights/`
 
     const params = new URLSearchParams()
     params.append('city', destination.name)
@@ -19,12 +19,23 @@ class FlightService {
     const url = new URL(baseUrl)
     url.search = params.toString()
 
-    const result = await fetch(url)
+    const requestData: RequestInit = {
+      headers: { ...AuthService.getAuthorizationHeader() }
+    }
 
-    return await result.json()
+    const result = await fetch(url, requestData)
+
+    if (result.ok) {
+      const json = await result.json()
+      console.log(json)
+      return json
+    } else {
+      // TODO: Take this out of my sight
+      throw { response: result, requestData: requestData, json: await result.json() }
+    }
   }
 
-  private formatDate(date: Date) {
+  private static formatDate(date: Date) {
     return date.toLocaleDateString('en-US')
   }
 }
