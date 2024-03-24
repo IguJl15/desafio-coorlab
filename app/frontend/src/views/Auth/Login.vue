@@ -24,7 +24,6 @@ const error = ref<AppError | undefined>()
 
 function redirectToHome() {
   window.location.hash = '/'
-  console.log('Logged in. Redirecting to home')
 }
 
 async function onFinish(values: any) {
@@ -32,17 +31,11 @@ async function onFinish(values: any) {
     error.value = undefined
 
     await AuthService.login(values.username, values.password)
-    console.log('logou. Alterando estado de login do authstate')
     authState.value.loggedIn()
     redirectToHome()
   } catch (err) {
-    console.log('error no login', err)
     error.value = err as AppError
   }
-}
-
-const onFinishFailed = (errorInfo: any) => {
-  console.log('Failed:', errorInfo)
 }
 </script>
 
@@ -56,7 +49,6 @@ const onFinishFailed = (errorInfo: any) => {
       :wrapper-col="{ span: 18 }"
       autocomplete="off"
       @finish="onFinish"
-      @finishFailed="onFinishFailed"
     >
       <FormItem :hidden="!authState.isLoggedIn"
         >Você ja está autenticado. <a href="/">Prossiga para a tela inicial</a></FormItem

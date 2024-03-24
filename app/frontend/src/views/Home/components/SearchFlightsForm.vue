@@ -51,12 +51,10 @@ const formState = reactive<{
 })
 
 function onSubmit() {
-  console.log('Validating')
 
   formRef.value
     .validate()
     .then(() => {
-      console.log('values', formState, toRaw(formState))
       emit('form-button-click', {
         date: formState.date!.toDate(),
         destination: airportList.filter((air) => formState.destination!.includes(air.code))[0]
@@ -72,7 +70,6 @@ const dialogRef = ref<HTMLDialogElement>()
 const dialogErrors = ref<string[] | undefined>()
 
 function onFormError(errors: ValidateErrorEntity) {
-  console.log('errors', errors)
   dialogErrors.value = errors.errorFields.reduce<string[]>((list, err) => {
     list.push(...err.errors)
     return list

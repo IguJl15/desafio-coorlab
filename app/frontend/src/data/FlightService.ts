@@ -53,7 +53,7 @@ export default class FlightService {
         others
       }
     } else {
-      // TODO: Take this out of my sight
+      // TODO: Handle 401 (access token expired)
       throw {
         response: result,
         requestData: requestData,

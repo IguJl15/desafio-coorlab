@@ -18,10 +18,6 @@ switch (flight.type) {
     break
 }
 
-console.log(seatLabel)
-console.log(seatDescription)
-console.log(flight);
-
 
 const numberFormatter = Intl.NumberFormat(undefined, {
   style: 'currency',
