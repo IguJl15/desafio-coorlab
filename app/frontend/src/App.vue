@@ -2,7 +2,7 @@
 import SearchFlightsForm, { type FormDataScheme } from '@/components/SearchFlightsForm.vue'
 import ErrorContainer from '@/components/ErrorContainer.vue'
 
-import type { FlightsResponse } from '@/data/FlightService'
+import type { FlightsData } from '@/data/FlightService'
 import FlightService from '@/data/FlightService'
 import { ref } from 'vue'
 import AuthService from './data/AuthService'
@@ -11,7 +11,7 @@ import type { AppError } from './models/AppError'
 type Data = {
   isLoading: boolean
   error: AppError | null
-  data: FlightsResponse | null
+  data: FlightsData | null
 }
 
 const flightsEventData = ref<Data>({
@@ -24,7 +24,6 @@ async function search(formData: FormDataScheme): Promise<void> {
   clearData()
   try {
     flightsEventData.value.isLoading = true
-    // validate data
 
     const result = await FlightService.searchFlights(formData.destination, formData.date)
 
