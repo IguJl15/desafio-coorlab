@@ -76,19 +76,22 @@ export class Flight {
 
     const hasDays = days && days != '0'
     if (hasDays) {
-      humanizedDuration += days + ' ' + (days == '1' ? 'dia' : 'dias')
+      humanizedDuration += days + ' ' + (days == '01' ? 'dia' : 'dias')
     }
 
     const [hours, minutes] = time.split(':')
     // ignore seconds
-    const hasHours = hours && hours != '00' && hours != '0'
+
+    const hasHours = hours && hours != '00'
     if (hasHours) {
       if (humanizedDuration.length > 0) humanizedDuration += ' e '
-      humanizedDuration += hours + ' ' + (hours == '1' ? 'hora' : 'horas')
+      humanizedDuration += hours + ' ' + (hours == '01' ? 'hora' : 'horas')
     }
-    if (minutes && !hasDays /* ignore minutes when we have days */) {
+
+    const hasMinutes = minutes && minutes != '00'
+    if (hasMinutes && !hasDays /* ignore minutes when we have days */) {
       if (humanizedDuration.length > 0) humanizedDuration += ' e '
-      humanizedDuration += minutes + ' ' + minutes == '1' ? 'minuto' : 'minutos'
+      humanizedDuration += minutes + ' ' + (minutes == '01' ? 'minuto' : 'minutos')
     }
 
     return humanizedDuration
