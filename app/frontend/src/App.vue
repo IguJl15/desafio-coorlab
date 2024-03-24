@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AntDesignTheme from '@/components/AntDesignTheme.vue'
 import SearchFlightsForm, { type FormDataScheme } from '@/components/SearchFlightsForm.vue'
 import ErrorContainer from '@/components/ErrorContainer.vue'
 import FlightsList from '@/components/FlightsList.vue'
@@ -50,39 +51,40 @@ function login() {
 </script>
 
 <template>
-  <header class="">
-    <h1>Calculadora de Viagens Aéreas</h1>
-    <Button type="primary" ghost @click="login">Login</Button>
-  </header>
-  <main class="body">
-    <!-- .body = light color (50% transparent) -->
-    <SearchFlightsForm @form-button-click="search" />
-    <ErrorContainer v-if="flightsEventData.error != null" :error="flightsEventData.error" />
-    <div v-if="flightsEventData.isLoading">Loading...</div>
-    <div v-if="flightsEventData.data != null" class="results">
-      <FlightsList
-        title="Passagem mais confortável e rápida"
-        :flights="flightsEventData.data.comfort"
-        type="comfort"
-      >
-        <template #icon><DollarCircleOutlined /></template>
-      </FlightsList>
-      <FlightsList
-        title="Passagem que cabem no seu bolso"
-        :flights="flightsEventData.data.economic"
-        type="economic"
-      >
-        <template #icon><DollarCircleOutlined /></template>
-      </FlightsList>
-      <FlightsList
-        title="Passagem que cabem no seu bolso"
-        :flights="flightsEventData.data.others"
-        type="comfort"
-      >
-        <template #icon><DollarCircleOutlined /></template>
-      </FlightsList>
+  <AntDesignTheme>
+    <header class="">
+      <h1>Calculadora de Viagens Aéreas</h1>
+      <Button type="primary" ghost @click="login">Login</Button>
+    </header>
+    <main class="body">
+      <!-- .body = light color (50% transparent) -->
+      <SearchFlightsForm @form-button-click="search" />
+      <ErrorContainer v-if="flightsEventData.error != null" :error="flightsEventData.error" />
+      <div v-if="flightsEventData.isLoading">Loading...</div>
+      <div v-if="flightsEventData.data != null" class="results">
+        <FlightsList
+          title="Passagem mais confortável e rápida"
+          :flights="flightsEventData.data.comfort"
+          type="comfort"
+        >
+          <template #icon><DollarCircleOutlined /></template>
+        </FlightsList>
+        <FlightsList
+          title="Passagem que cabem no seu bolso"
+          :flights="flightsEventData.data.economic"
+          type="economic"
+        >
+          <template #icon><DollarCircleOutlined /></template>
+        </FlightsList>
+        <FlightsList
+          title="Passagem que cabem no seu bolso"
+          :flights="flightsEventData.data.others"
+          type="comfort"
+        >
+          <template #icon><DollarCircleOutlined /></template>
+        </FlightsList>
 
-      <!-- <div class="comfort">
+        <!-- <div class="comfort">
         <h3>Conforto {{ flightsEventData.data.comfort.length }}</h3>
 
         <div v-if="flightsEventData.data.comfort.length > 0">
@@ -133,8 +135,9 @@ function login() {
         </div>
         <div v-else>Nenhum voo encontrado</div>
       </div> -->
-    </div>
-  </main>
+      </div>
+    </main>
+  </AntDesignTheme>
 </template>
 
 <style scoped>

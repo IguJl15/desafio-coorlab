@@ -129,7 +129,7 @@ const destinationInputComp = computed({
   padding: 16px;
   border-radius: 12px;
 
-  background-color: var(--vt-c-black-soft);
+  background-color: var(--color-background-soft);
 
   & h3,
   p {
@@ -151,7 +151,7 @@ const destinationInputComp = computed({
     & .form-item {
       width: 100%;
 
-      background-color: white;
+      background-color: var(--color-background);
       padding: 6px;
       border-radius: 6px;
 
