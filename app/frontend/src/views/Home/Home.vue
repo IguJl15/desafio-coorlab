@@ -65,12 +65,21 @@ function logout() {
 </script>
 
 <template>
-  <header class="">
+  <div class="header-bar">
+    <div class="header-bar-content">
+      <img src="@/assets/logo.png" alt="CB Viagens Logo" srcset="" height="52" />
+      <Button v-if="authState.isLoggedIn" type="primary" danger ghost @click="logout"
+        >LogOut</Button
+      >
+      <!-- Just in case some delay happen on auth systems -->
+      <Button v-else type="primary" @click="redirectToLogin">Login</Button>
+    </div>
+  </div>
+
+  <header>
     <h1>Calculadora de Viagens Aéreas</h1>
-    <Button v-if="authState.isLoggedIn" type="primary" danger ghost @click="logout">LogOut</Button>
   </header>
   <main class="body">
-    <!-- .body = light color (50% transparent) -->
     <SearchFlightsForm @form-button-click="search" />
     <ErrorContainer
       class="error-container"
@@ -121,10 +130,29 @@ function logout() {
   }
 }
 
-header {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
+.header-bar {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  padding: 16px 8px;
+
+  background-color: var(--vt-c-black-soft);
+
+  & .header-bar-content {
+    margin: 0 auto;
+    max-width: 1280px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    & img {
+      height: 32px;
+    }
+  }
 }
 </style>
