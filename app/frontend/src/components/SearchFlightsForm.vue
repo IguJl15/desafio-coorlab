@@ -59,7 +59,7 @@ function onSubmit() {
       console.log('values', formState, toRaw(formState))
       emit('form-button-click', {
         date: formState.date!.toDate(),
-        destination: airportList.filter((air) => air.name == formState.destination)[0]
+        destination: airportList.filter((air) => formState.destination.includes(air.code))[0]
       })
     })
     .catch((error: any) => {
