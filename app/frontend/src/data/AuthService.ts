@@ -13,11 +13,17 @@ export default class AuthService {
     })
 
     if (!result.ok) {
-      // TODO: Take this out of my sight
-      throw result
+      throw {
+        title: 'Ocorreu um erro ao realizar login',
+        ...(await result.json())
+      }
     }
 
     localStorage.setItem('auth_tokens', await result.text())
+  }
+
+  static logout() {
+    localStorage.removeItem('auth_tokens')
   }
 
   private static getAuthTokens(): AuthTokens | null {
@@ -33,5 +39,9 @@ export default class AuthService {
 
     if (tokens) return { Authorization: 'Bearer ' + tokens.access }
     else return {}
+  }
+
+  static hasAuthTokens() {
+    return this.getAuthTokens() != null
   }
 }

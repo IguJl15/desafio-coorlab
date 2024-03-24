@@ -1,16 +1,22 @@
 <script setup lang="ts">
-import SearchFlightsForm, { type FormDataScheme } from './components/SearchFlightsForm.vue'
 import FlightsList from './components/FlightsList.vue'
+import SearchFlightsForm, { type FormDataScheme } from './components/SearchFlightsForm.vue'
 import ErrorContainer from '@/views/components/ErrorContainer.vue'
+import { authState } from '@/views/Auth/AuthState'
 
+import { DollarCircleOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons-vue'
 import { Button, Divider } from 'ant-design-vue'
-import { DollarCircleOutlined, StarOutlined, LikeOutlined } from '@ant-design/icons-vue'
 
+import AuthService from '@/data/AuthService'
 import type { FlightsData } from '@/data/FlightService'
 import FlightService from '@/data/FlightService'
+import type { AppError } from '@/models/AppError'
 import { ref } from 'vue'
-import AuthService from '@/data/AuthService'
-import type { AppError } from './models/AppError'
+
+const { isLoggedIn } = authState.value
+if (!isLoggedIn) {
+  redirectToLogin()
+}
 
 type Data = {
   isLoading: boolean
@@ -23,6 +29,10 @@ const flightsEventData = ref<Data>({
   error: null,
   data: null
 })
+
+function redirectToLogin() {
+  window.location.hash = '/login'
+}
 
 async function search(formData: FormDataScheme): Promise<void> {
   clearData()
@@ -47,15 +57,17 @@ function clearData() {
   flightsEventData.value.error = null
 }
 
-function login() {
-  AuthService.login('igorj', 'admin')
+function logout() {
+  AuthService.logout()
+  authState.value.loggedOut()
+  redirectToLogin()
 }
 </script>
 
 <template>
   <header class="">
     <h1>Calculadora de Viagens Aéreas</h1>
-    <Button type="primary" ghost @click="login">Login</Button>
+    <Button v-if="authState.isLoggedIn" type="primary" danger ghost @click="logout">LogOut</Button>
   </header>
   <main class="body">
     <!-- .body = light color (50% transparent) -->
