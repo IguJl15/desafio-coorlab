@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import SearchFlightsForm, { type FormDataScheme } from '@/components/SearchFlightsForm.vue'
 import ErrorContainer from '@/components/ErrorContainer.vue'
+import FlightsList from '@/components/FlightsList.vue'
+
+import { Button } from 'ant-design-vue'
+import { DollarCircleOutlined } from '@ant-design/icons-vue'
 
 import type { FlightsData } from '@/data/FlightService'
 import FlightService from '@/data/FlightService'
@@ -48,7 +52,7 @@ function login() {
 <template>
   <header class="">
     <h1>Calculadora de Viagens Aéreas</h1>
-    <button type="button" @click="login"></button>
+    <Button type="primary" ghost @click="login">Login</Button>
   </header>
   <main class="body">
     <!-- .body = light color (50% transparent) -->
@@ -56,7 +60,29 @@ function login() {
     <ErrorContainer v-if="flightsEventData.error != null" :error="flightsEventData.error" />
     <div v-if="flightsEventData.isLoading">Loading...</div>
     <div v-if="flightsEventData.data != null" class="results">
-      <div class="comfort">
+      <FlightsList
+        title="Passagem mais confortável e rápida"
+        :flights="flightsEventData.data.comfort"
+        type="comfort"
+      >
+        <template #icon><DollarCircleOutlined /></template>
+      </FlightsList>
+      <FlightsList
+        title="Passagem que cabem no seu bolso"
+        :flights="flightsEventData.data.economic"
+        type="economic"
+      >
+        <template #icon><DollarCircleOutlined /></template>
+      </FlightsList>
+      <FlightsList
+        title="Passagem que cabem no seu bolso"
+        :flights="flightsEventData.data.others"
+        type="comfort"
+      >
+        <template #icon><DollarCircleOutlined /></template>
+      </FlightsList>
+
+      <!-- <div class="comfort">
         <h3>Conforto {{ flightsEventData.data.comfort.length }}</h3>
 
         <div v-if="flightsEventData.data.comfort.length > 0">
@@ -106,7 +132,7 @@ function login() {
           </div>
         </div>
         <div v-else>Nenhum voo encontrado</div>
-      </div>
+      </div> -->
     </div>
   </main>
 </template>
@@ -122,22 +148,10 @@ function login() {
   margin-bottom: 4px;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 </style>
