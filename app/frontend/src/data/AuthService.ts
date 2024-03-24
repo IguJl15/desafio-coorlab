@@ -1,5 +1,7 @@
 import env from '@/misc/env'
 
+type AuthTokens = { refresh: string; access: string }
+
 export default class AuthService {
   static async login(username: string, password: string) {
     const baseUrl = `${env.VITE_HOST}/api/token/`
@@ -18,7 +20,7 @@ export default class AuthService {
     localStorage.setItem('auth_tokens', await result.text())
   }
 
-  static getAuthTokens(): { refresh: string; access: string } | null {
+  private static getAuthTokens(): AuthTokens | null {
     const tokens = localStorage.getItem('auth_tokens')
 
     if (!tokens) return null

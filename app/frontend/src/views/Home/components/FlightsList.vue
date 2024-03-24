@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Flight, type FlightType } from '@/models/Flight'
-import FlightItem from '@/components/FlightItem.vue'
+import FlightItem from '@/views/Home/components/FlightItem.vue'
 
 defineProps<{ title: string; flights: Flight[] }>()
 </script>
