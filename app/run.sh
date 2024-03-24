@@ -64,6 +64,13 @@ check_return_code "migrate", $?
 python3 manage.py loadjsondata "$fixture_flights"
 check_return_code "loadjsondata", $?
 
+export DJANGO_SUPERUSER_USERNAME="CBAdmin"
+export DJANGO_SUPERUSER_EMAIL="administrator@cbviagens.com"
+export DJANGO_SUPERUSER_PASSWORD=admin
+
+python3 manage.py createsuperuser --no-input --skip-checks
+# WARNING: ignoring errors.
+
 echo "Starting backend..."
 
 run_backend_cmd="python3 manage.py runserver localhost:3000"
