@@ -3,6 +3,14 @@ import { formatVerboseDestination } from '@/misc/helper'
 import type { Airport } from '@/models/Flight'
 import { computed, ref } from 'vue'
 
+import { Button, Form, FormItem, Input, Select, SelectOption } from 'ant-design-vue'
+import {
+  ArrowRightOutlined,
+  LoginOutlined,
+  LogoutOutlined,
+  SearchOutlined
+} from '@ant-design/icons-vue'
+
 import airports from '@/data/airports.json'
 
 export type FormDataScheme = {
@@ -16,7 +24,7 @@ defineEmits<{
 
 const airportList: Airport[] = [{ code: 'THE', name: 'Teresina' }, ...airports]
 
-const formData = ref<FormDataScheme>({
+const formState = ref<FormDataScheme>({
   destination: airportList[0],
   date: new Date()
 })
@@ -24,17 +32,17 @@ const formData = ref<FormDataScheme>({
 // Computed references to enhance form data handle
 const dateInputComp = computed({
   get() {
-    return formData.value.date.toISOString().substring(0, 10)
+    return formState.value.date?.toISOString().substring(0, 10)
   },
   // expect string but receives Date from "valueAsDate" property
-  set(newValue: unknown) {
-    formData.value.date = newValue as Date
+  set(newValue) {
+    if (newValue) formState.value.date = newValue as Date
   }
 })
 
 const destinationInputComp = computed({
   get() {
-    return formatVerboseDestination(formData.value.destination)
+    return formatVerboseDestination(formState.value.destination)
   },
   set(newValue: string) {
     const code = newValue.split(' - ')[0]
@@ -42,7 +50,7 @@ const destinationInputComp = computed({
     const airportHasCode = (airport: Airport) => airport.code == code
 
     if (code.length > 1 && airportList.some(airportHasCode)) {
-      formData.value.destination = airportList.filter(airportHasCode)[0]
+      formState.value.destination = airportList.filter(airportHasCode)[0]
     }
   }
 })
@@ -50,27 +58,65 @@ const destinationInputComp = computed({
 
 <template>
   <div class="search-form-container">
-    <h2>Encontre o melhor voo para a sua viagem</h2>
-    <p>Insira abaixo as informações da viagem que você planeja</p>
-    <form action="/" method="get">
-      <select v-model="destinationInputComp" list="cities-list">
-        <template
-          v-for="(item, index) in airportList.sort((a, b) => a.name.localeCompare(b.name))"
-          :key="index"
+    <div>
+      <h3>Encontre o melhor voo para a sua viagem</h3>
+      <p>Insira abaixo as informações da viagem que você planeja</p>
+    </div>
+
+    <Form
+      class="search-form"
+      layout="vertical"
+      @finish="$emit('form-button-click', formState)"
+      :model="formState"
+    >
+      <FormItem
+        class="form-item"
+        label="Destino"
+        :rules="[{ required: true, message: 'Escolha seu destino' }]"
+      >
+        <!-- event has the value of the "value" prop from SelectOption  -->
+        <Select
+          show-search
+          name="destination"
+          :value="destinationInputComp"
+          @change="
+            (event) => {
+              destinationInputComp = event?.toString() ?? ''
+            }
+          "
         >
-          <option :value="formatVerboseDestination(item)">
-            {{ item.name }}
-          </option>
+          <template #placeholder> <LogoutOutlined style="color: black" /> Busca </template>
+          <template
+            v-for="(item, index) in airportList.sort((a, b) => a.name.localeCompare(b.name))"
+            :key="index"
+          >
+            <SelectOption :value="formatVerboseDestination(item)">
+              {{ item.name }}
+            </SelectOption>
+          </template>
+        </Select>
+      </FormItem>
+      <ArrowRightOutlined style="color: white" />
+      <FormItem class="form-item" label="Data da viagem">
+        <Input
+          name="date"
+          type="date"
+          placeholder="Procure a cidade de destino"
+          @input="(event) => (dateInputComp = (event.target! as HTMLInputElement).valueAsDate)"
+          :value="dateInputComp"
+        >
+          <template #prefix>
+            <LoginOutlined />
+          </template>
+        </Input>
+      </FormItem>
+      <Button class="button" type="primary" html-type="submit">
+        <template #icon>
+          <SearchOutlined />
         </template>
-        <option></option>
-      </select>
-      <input
-        type="date"
-        @input="(event) => (dateInputComp = (event.target! as HTMLInputElement).valueAsDate)"
-        :value="dateInputComp"
-      />
-      <button type="submit" @click.prevent="$emit('form-button-click', formData)">Procurar</button>
-    </form>
+        Procurar Voos
+      </Button>
+    </Form>
   </div>
 </template>
 
@@ -78,16 +124,39 @@ const destinationInputComp = computed({
 .search-form-container {
   display: flex;
   flex-direction: column;
+  gap: 8px;
 
-  & form {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+  padding: 16px;
+  border-radius: 12px;
+
+  background-color: var(--vt-c-black-soft);
+
+  & h3,
+  p {
+    margin: 0;
   }
-}
 
-form input,
-form select {
-  padding: 4px;
+  & .search-form {
+    display: flex;
+    flex-direction: row;
+    place-items: center;
+    gap: 8px;
+
+    & .button {
+      align-self: end;
+
+      margin-bottom: 6px;
+    }
+
+    & .form-item {
+      width: 100%;
+
+      background-color: white;
+      padding: 6px;
+      border-radius: 6px;
+
+      margin: 0;
+    }
+  }
 }
 </style>
