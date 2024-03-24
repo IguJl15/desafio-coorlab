@@ -21,10 +21,10 @@
   --vt-c-text-dark-2: rgba(235, 235, 235, 0.8);
 
   /* Personal colors */
-  --primary-color: #7749f8;
-  --primary-color-dark: #5227cc;
-  --primary-color-light: #ebe5fc;
-  --primary-color-darker: hsla(256, 68%, 48%, 0.096);
+  --primary-color: hsl(184, 97%, 36%);
+  --primary-color-dark: hsl(184, 100%, 24%);
+  --primary-color-light: hsl(184, 80%, 94%);
+  --primary-color-darker: hsla(184, 50%, 50%, 0.09);
 }
 
 /* semantic color variables for this project */
