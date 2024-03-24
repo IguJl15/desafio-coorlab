@@ -25,7 +25,8 @@ class Command(BaseCommand):
                 duration_seconds = timeparse.timeparse(flight_json["duration"])
                 duration = timedelta(seconds=duration_seconds)
 
-                Flight.objects.create(
+                flight_model = Flight(
+                    id=flight_json["id"],
                     company_name=flight_json["name"],
                     city_destination=flight_json["city"],
                     comfort_bed_location=flight_json["bed"],
@@ -35,6 +36,8 @@ class Command(BaseCommand):
                     price_economic=price_economic,
                     city_from="Teresina",
                 )
+
+                flight_model.save()
             self.stdout.write(
                 "JSON loaded to the database successfully! %s items added"
                 % len(flights)
