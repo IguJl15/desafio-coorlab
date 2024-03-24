@@ -5,7 +5,7 @@ import ErrorContainer from '@/components/ErrorContainer.vue'
 import FlightsList from '@/components/FlightsList.vue'
 
 import { Button, Divider } from 'ant-design-vue'
-import { DollarCircleOutlined } from '@ant-design/icons-vue'
+import { DollarCircleOutlined, StarOutlined, LikeOutlined } from '@ant-design/icons-vue'
 
 import type { FlightsData } from '@/data/FlightService'
 import FlightService from '@/data/FlightService'
@@ -72,28 +72,19 @@ function login() {
         <strong>Estas são as melhores alternativas de viagens para a sua data de decolagem</strong>
       </div>
       <div class="results" v-if="flightsEventData.data != null">
-        <FlightsList
-          title="Passagem mais confortável e rápida"
-          :flights="flightsEventData.data.comfort"
-          type="comfort"
-        >
+        <FlightsList title="Voo mais confortável e rápido" :flights="flightsEventData.data.comfort">
+          <template #icon><StarOutlined /></template>
+        </FlightsList>
+        <Divider />
+        <FlightsList title="Voo que cabe no seu bolso" :flights="flightsEventData.data.economic">
           <template #icon><DollarCircleOutlined /></template>
         </FlightsList>
         <Divider />
         <FlightsList
-          title="Passagem que cabem no seu bolso"
-          :flights="flightsEventData.data.economic"
-          type="economic"
-        >
-          <template #icon><DollarCircleOutlined /></template>
-        </FlightsList>
-        <Divider />
-        <FlightsList
-          title="Passagem que cabem no seu bolso"
+          title="Outros voos que voce pode gostar"
           :flights="flightsEventData.data.others"
-          type="comfort"
         >
-          <template #icon><DollarCircleOutlined /></template>
+          <template #icon><LikeOutlined /></template>
         </FlightsList>
       </div>
     </main>

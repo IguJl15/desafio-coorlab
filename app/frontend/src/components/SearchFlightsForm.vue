@@ -110,7 +110,7 @@ function onFormError(errors: ValidateErrorEntity) {
       <ArrowRightOutlined :class="'arrow'" style="color: white" />
       <FormItem class="form-item" ref="destination" name="destination" label="Destino">
         <!-- event has the value of the "value" prop from SelectOption  -->
-        <div class="input-row-icon">
+        <div class="input-row-icon last">
           <LoginOutlined />
           <Select
             show-search
@@ -137,7 +137,7 @@ function onFormError(errors: ValidateErrorEntity) {
         >
         </DatePicker>
       </FormItem>
-      <Button class="button" type="primary" html-type="submit">
+      <Button class="button" type="default" size="large" html-type="submit">
         <template #icon>
           <SearchOutlined />
         </template>
@@ -182,8 +182,6 @@ function onFormError(errors: ValidateErrorEntity) {
     & .button,
     .arrow {
       align-self: end;
-
-      margin-bottom: 6px;
     }
     & .arrow {
       margin-bottom: 16px;
@@ -212,6 +210,22 @@ function onFormError(errors: ValidateErrorEntity) {
   border: none;
   border-radius: 12px;
   padding: 12px;
+}
+
+@media (max-width: 768px) {
+  .search-form-container {
+    & .search-form {
+      flex-direction: column;
+
+      & .arrow {
+        display: none;
+      }
+
+      & .input-row-icon.last {
+        flex-direction: row-reverse;
+      }
+    }
+  }
 }
 
 @media (prefers-color-scheme: dark) {

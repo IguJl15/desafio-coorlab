@@ -2,7 +2,7 @@
 import { Flight, type FlightType } from '@/models/Flight'
 import FlightItem from '@/components/FlightItem.vue'
 
-defineProps<{ title: string; flights: Flight[]; type: FlightType }>()
+defineProps<{ title: string; flights: Flight[] }>()
 </script>
 
 <template>
@@ -19,7 +19,7 @@ defineProps<{ title: string; flights: Flight[]; type: FlightType }>()
         O que acha de testar outra data ou destino?
       </div>
       <template v-for="(item, index) in flights" :key="index">
-        <FlightItem class="item" :flight="item" :type="type" />
+        <FlightItem class="item" :flight="item" />
       </template>
     </div>
   </div>
@@ -48,6 +48,7 @@ defineProps<{ title: string; flights: Flight[]; type: FlightType }>()
 }
 .list {
   display: flex;
+  justify-content: space-between;
   flex-wrap: wrap;
 
   margin: 0 32px;
@@ -75,7 +76,7 @@ defineProps<{ title: string; flights: Flight[]; type: FlightType }>()
 @media (min-width: 768px) {
   .list {
     & .item {
-      width: 50%;
+      width: 49%;
     }
   }
 }

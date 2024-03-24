@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import type { Flight, FlightType } from '@/models/Flight'
+import type { Flight } from '@/models/Flight'
 import { ArrowDownOutlined, ArrowRightOutlined } from '@ant-design/icons-vue'
 
-const { flight, type } = defineProps<{ flight: Flight; type: FlightType }>()
+const { flight } = defineProps<{ flight: Flight }>()
 
 let seatLabel: string
 let seatDescription: string
 
-switch (type) {
+switch (flight.type) {
   case 'comfort':
     seatLabel = 'Leito'
     seatDescription = 'completo'
@@ -18,7 +18,16 @@ switch (type) {
     break
 }
 
-const numberFormatter = Intl.NumberFormat()
+console.log(seatLabel)
+console.log(seatDescription)
+console.log(flight);
+
+
+const numberFormatter = Intl.NumberFormat(undefined, {
+  style: 'currency',
+  currency: 'BRL',
+  currencyDisplay: 'code'
+})
 </script>
 
 <template>
@@ -38,7 +47,7 @@ const numberFormatter = Intl.NumberFormat()
     </div>
     <div class="right">
       <span>Valor:</span>
-      <strong>R$ {{ numberFormatter.format(flight.price) }}</strong>
+      <strong>R${{ numberFormatter.format(flight.price).replace('BRL', '') }}</strong>
     </div>
   </div>
 </template>
@@ -49,14 +58,19 @@ const numberFormatter = Intl.NumberFormat()
 
   background-color: var(--color-background-mute);
   /* margin-top: 8px; */
+  border-radius: 4px;
+  overflow: hidden;
 
-  & > div {
-    padding: 8px;
-  }
   & h3,
   h4,
   h5 {
     margin: 0;
+  }
+
+  & .left,
+  .right {
+    padding: 8px;
+    color: var(--vt-c-text-dark-1);
   }
 
   & .left {
@@ -74,20 +88,29 @@ const numberFormatter = Intl.NumberFormat()
   }
 
   & .flight-info {
+    background-color: var(--primary-color-darker);
+
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
     & .header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       border-bottom: 1px solid var(--color-border);
+
+      padding: 8px 0;
     }
 
-    width: 100%;
-    display: flex;
-    flex-direction: column;
+    & * {
+      padding: 0 8px;
+    }
   }
 
   & .right {
+    width: 100px;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -96,6 +119,19 @@ const numberFormatter = Intl.NumberFormat()
 
     line-height: normal;
     text-wrap: nowrap;
+  }
+}
+
+@media (max-width: 460px) {
+  .flight {
+    flex-direction: column;
+    & .left {
+      display: none;
+    }
+
+    & .right {
+      width: 100%;
+    }
   }
 }
 </style>

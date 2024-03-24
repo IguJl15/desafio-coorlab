@@ -18,13 +18,14 @@ export type GenericFlight = {
 }
 
 export class Flight {
-  constructor(
+  private constructor(
     public origin: Airport,
     public destination: Airport,
     public company_name: string,
     public price: number,
     public seat: string,
-    public duration: string
+    public duration: string,
+    public type: FlightType
   ) {}
 
   static comfort(data: GenericFlight) {
@@ -36,7 +37,8 @@ export class Flight {
       data.price_comfort,
       data.comfort_bed_location,
 
-      data.duration
+      this.parseDuration(data.duration),
+      'comfort'
     )
   }
 
@@ -49,7 +51,8 @@ export class Flight {
       data.price_economic,
       data.economic_seat_location,
 
-      data.duration
+      this.parseDuration(data.duration),
+      'economic'
     )
   }
 
@@ -63,5 +66,31 @@ export class Flight {
 
   private static mockOrigin(): Airport {
     return { code: 'THE', name: 'Teresina' }
+  }
+
+  private static parseDuration(duration: string) {
+    let humanizedDuration = ''
+
+    if (!duration.includes(' ')) duration = ` ${duration}`
+    const [days, time] = duration.split(' ')
+
+    const hasDays = days && days != '0'
+    if (hasDays) {
+      humanizedDuration += days + ' ' + (days == '1' ? 'dia' : 'dias')
+    }
+
+    const [hours, minutes] = time.split(':')
+    // ignore seconds
+    const hasHours = hours && hours != '00' && hours != '0'
+    if (hasHours) {
+      if (humanizedDuration.length > 0) humanizedDuration += ' e '
+      humanizedDuration += hours + ' ' + (hours == '1' ? 'hora' : 'horas')
+    }
+    if (minutes && !hasDays /* ignore minutes when we have days */) {
+      if (humanizedDuration.length > 0) humanizedDuration += ' e '
+      humanizedDuration += minutes + ' ' + minutes == '1' ? 'minuto' : 'minutos'
+    }
+
+    return humanizedDuration
   }
 }

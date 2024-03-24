@@ -36,8 +36,8 @@ export default class FlightService {
     if (result.ok) {
       const json: FlightsResponse = await result.json()
 
-      const comfort = json.comfort.map((a) => Flight.comfort(a, airports))
-      const economic = json.economic.map((a) => Flight.economic(a, airports))
+      const comfort = json.comfort.map((a) => Flight.comfort(a))
+      const economic = json.economic.map((a) => Flight.economic(a))
 
       // For each flight, create both economic and comfort items to better
       // visualization on the page
