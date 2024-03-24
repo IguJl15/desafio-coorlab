@@ -14,6 +14,10 @@ defineProps<{ title: string; flights: Flight[]; type: FlightType }>()
       <h4>{{ title }}</h4>
     </div>
     <div class="list">
+      <div class="empty-list-alert" v-if="flights.length == 0">
+        Infelizmente não encontramos voos com essas especificações. <br />
+        O que acha de testar outra data ou destino?
+      </div>
       <template v-for="(item, index) in flights" :key="index">
         <FlightItem class="item" :flight="item" :type="type" />
       </template>
@@ -54,6 +58,18 @@ defineProps<{ title: string; flights: Flight[]; type: FlightType }>()
 
     margin-bottom: 12px;
   }
+}
+.empty-list-alert {
+  width: 100%;
+  text-align: center;
+
+  background-color: var(--color-background-mute);
+  color: var(--color-heading);
+  padding: 8px 0;
+  border-radius: 8px;
+
+  line-height: normal;
+  letter-spacing: -0.2px;
 }
 
 @media (min-width: 768px) {

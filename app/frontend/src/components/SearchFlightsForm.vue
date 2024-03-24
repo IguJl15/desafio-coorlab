@@ -42,11 +42,11 @@ const airportList: Airport[] = [mockAirport, ...airports]
 
 const formState = reactive<{
   origin: string | undefined
-  destination: string
+  destination: string | undefined
   date: Dayjs | undefined
 }>({
   origin: undefined,
-  destination: airportList[0].name,
+  destination: undefined,
   date: undefined
 })
 
@@ -59,7 +59,7 @@ function onSubmit() {
       console.log('values', formState, toRaw(formState))
       emit('form-button-click', {
         date: formState.date!.toDate(),
-        destination: airportList.filter((air) => formState.destination.includes(air.code))[0]
+        destination: airportList.filter((air) => formState.destination!.includes(air.code))[0]
       })
     })
     .catch((error: any) => {
@@ -133,10 +133,8 @@ function onFormError(errors: ValidateErrorEntity) {
           type="date"
           placeholder="Procure a cidade de destino"
           v-model:value="formState.date"
+          style="width: 100%"
         >
-          <!-- <template #prefix>
-            <LoginOutlined />
-          </template> -->
         </DatePicker>
       </FormItem>
       <Button class="button" type="primary" html-type="submit">

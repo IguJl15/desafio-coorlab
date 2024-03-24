@@ -4,7 +4,7 @@ import SearchFlightsForm, { type FormDataScheme } from '@/components/SearchFligh
 import ErrorContainer from '@/components/ErrorContainer.vue'
 import FlightsList from '@/components/FlightsList.vue'
 
-import { Button } from 'ant-design-vue'
+import { Button, Divider } from 'ant-design-vue'
 import { DollarCircleOutlined } from '@ant-design/icons-vue'
 
 import type { FlightsData } from '@/data/FlightService'
@@ -32,12 +32,15 @@ async function search(formData: FormDataScheme): Promise<void> {
 
     const result = await FlightService.searchFlights(formData.destination, formData.date)
 
-    flightsEventData.value.data = result
+    setTimeout(() => {
+      flightsEventData.value.data = result
+
+      flightsEventData.value.isLoading = false
+    }, 500)
   } catch (error: AppError) {
     flightsEventData.value.error = error
+    flightsEventData.value.isLoading = false
   }
-
-  flightsEventData.value.isLoading = false
 }
 
 function clearData() {
@@ -59,9 +62,16 @@ function login() {
     <main class="body">
       <!-- .body = light color (50% transparent) -->
       <SearchFlightsForm @form-button-click="search" />
-      <ErrorContainer v-if="flightsEventData.error != null" :error="flightsEventData.error" />
-      <div v-if="flightsEventData.isLoading">Loading...</div>
-      <div v-if="flightsEventData.data != null" class="results">
+      <ErrorContainer
+        class="error-container"
+        v-if="flightsEventData.error != null"
+        :error="flightsEventData.error"
+      />
+      <h5 class="loading" v-if="flightsEventData.isLoading">Procurando os melhores voos...</h5>
+      <div style="text-align: center" v-if="flightsEventData.data != null">
+        <strong>Estas são as melhores alternativas de viagens para a sua data de decolagem</strong>
+      </div>
+      <div class="results" v-if="flightsEventData.data != null">
         <FlightsList
           title="Passagem mais confortável e rápida"
           :flights="flightsEventData.data.comfort"
@@ -69,6 +79,7 @@ function login() {
         >
           <template #icon><DollarCircleOutlined /></template>
         </FlightsList>
+        <Divider />
         <FlightsList
           title="Passagem que cabem no seu bolso"
           :flights="flightsEventData.data.economic"
@@ -76,6 +87,7 @@ function login() {
         >
           <template #icon><DollarCircleOutlined /></template>
         </FlightsList>
+        <Divider />
         <FlightsList
           title="Passagem que cabem no seu bolso"
           :flights="flightsEventData.data.others"
@@ -83,72 +95,33 @@ function login() {
         >
           <template #icon><DollarCircleOutlined /></template>
         </FlightsList>
-
-        <!-- <div class="comfort">
-        <h3>Conforto {{ flightsEventData.data.comfort.length }}</h3>
-
-        <div v-if="flightsEventData.data.comfort.length > 0">
-          <div class="info" v-for="(flight, index) in flightsEventData.data.comfort" :key="index">
-            <h4>{{ flight.company_name }}</h4>
-            <span> Destino: {{ flight.city_destination }} </span>
-            <span>Duração estimada: {{ flight.duration }} </span>
-            <span> Preço: {{ flight.price_comfort }} </span>
-            <span> Leito: {{ flight.comfort_bed_location }} (Completo) </span>
-          </div>
-        </div>
-        <div v-else>Nenhum voo encontrado</div>
-      </div>
-
-      <div class="economic">
-        <h3>Econômico {{ flightsEventData.data.economic.length }}</h3>
-
-        <div v-if="flightsEventData.data.economic.length > 0">
-          <div class="info" v-for="(flight, index) in flightsEventData.data.economic" :key="index">
-            <h4>{{ flight.company_name }}</h4>
-            <span>Destino: {{ flight.city_destination }}</span>
-            <span>Duração estimada: {{ flight.duration }} </span>
-            <span>Preço: {{ flight.price_economic }}</span>
-            <span>Assento: {{ flight.economic_seat_location }}</span>
-          </div>
-        </div>
-        <div v-else>Nenhum voo encontrado</div>
-      </div>
-      <div class="others">
-        <h3>Outros {{ flightsEventData.data.others.length }}</h3>
-
-        <div v-if="flightsEventData.data.others.length > 0">
-          <div class="info" v-for="(flight, index) in flightsEventData.data.others" :key="index">
-            <h4>{{ flight.company_name }}</h4>
-            <span> Destino: {{ flight.city_destination }} </span>
-            <span>Duração estimada: {{ flight.duration }} </span>
-            <div>
-              Preços:
-              <span>Econômica: {{ flight.price_economic }}</span>
-              <span>Comfort: {{ flight.price_comfort }}</span>
-            </div>
-            <div>
-              Assentos:
-              <span>Econômica: {{ flight.economic_seat_location }}</span>
-              <span>Comfort: {{ flight.comfort_bed_location }}</span>
-            </div>
-          </div>
-        </div>
-        <div v-else>Nenhum voo encontrado</div>
-      </div> -->
       </div>
     </main>
   </AntDesignTheme>
 </template>
 
 <style scoped>
-.info {
+.body {
   display: flex;
   flex-direction: column;
+  gap: 10px;
 
-  background-color: darkslategray;
+  /* padding: 16px; */
 
-  padding: 8px;
-  margin-bottom: 4px;
+  border-radius: 16px;
+
+  background-color: var(--color-background-soft);
+
+  & .loading {
+    text-align: center;
+  }
+
+  & .results {
+    padding: 8px;
+
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 header {
