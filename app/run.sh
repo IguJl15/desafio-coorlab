@@ -79,3 +79,11 @@ ${run_backend_cmd} &> "logs/backend.log" & disown;
 echo "Backend should be started soon at http://localhost:3000"
 
 echo 'Both application should be starting. Check their respective log files at "logs" folder (inside each project)'
+
+echo "!!"
+echo "Following application's logs. Press CTRL + C to finish this script"
+echo "!!"
+
+tail -f "$backend_dir/logs/backend.log" "$frontend_dir/logs/frontend.log" &
+wait
+exit 0
